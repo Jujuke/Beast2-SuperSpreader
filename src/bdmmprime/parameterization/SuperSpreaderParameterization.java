@@ -2,7 +2,7 @@ package bdmmprime.parameterization;
 
 import beast.base.core.Input;
 
-public class SSSCALARParameterization extends Parameterization {
+public class SuperSpreaderParameterization extends Parameterization {
 
     public Input<SkylineVectorParameter> becomeUninfectiousRateInput = new Input<>("becomeUninfectiousRate",
             "Become uninfectious rate skyline.", Input.Validate.REQUIRED);

@@ -1,0 +1,244 @@
+<beast version='2.0'
+       namespace='beast.base.core
+                 :beast.base.evolution.branchratemodel
+                 :beast.base.evolution.speciation
+                 :beast.base.evolution.tree.coalescent
+                 :beast.base.util
+                 :beast.base.evolution.nuc
+                 :beast.base.evolution.operator
+                 :beast.base.evolution.sitemodel
+                 :beast.base.evolution.substitutionmodel
+                 :beast.base.evolution.likelihood
+                 :beast.base.evolution
+                 :beast.base.inference.parameter
+                 :beast.base.inference.distributions'>
+
+    <mergewith point='misc'>
+
+        <fragment id='SSSCALARBDMMPrimeParameters' spec="beastfx.app.beauti.Fragment">
+            <![CDATA[
+
+            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='$(thisparam)SSSCALARPrior.t:$(n)' x='@$(thisparam)SSSCALAR.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.OneOnX"/>
+            </distribution>
+  		    <operator id='$(thisparam)SSSCALARScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SSSCALAR.t:$(n)"/>
+
+  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='$(thisparam)SSSCALARPriorSmart.t:$(n)' x='@$(thisparam)SSSCALAR.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.OneOnX"/>
+            </distribution>
+  		    <operator id='$(thisparam)SSSCALARScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SSSCALAR.t:$(n)"/>
+            ]]>
+
+            <connect srcID='$(thisparam)SSSCALAR.t:$(n)' targetID='state' inputName='stateNode'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+
+            <connect srcID='$(thisparam)SSSCALARPrior.t:$(n)' targetID='prior' inputName='distribution'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)SPSSSCALAR.t:$(n)/linkIdenticalValues=false
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+            <connect srcID='$(thisparam)SSSCALARScaler.t:$(n)' targetID='mcmc' inputName='operator'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)SPSSSCALAR.t:$(n)/linkIdenticalValues=false
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+
+            <connect srcID='$(thisparam)SSSCALARPriorSmart.t:$(n)' targetID='prior' inputName='distribution'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)SPSSSCALAR.t:$(n)/linkIdenticalValues=true
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+            <connect srcID='$(thisparam)SSSCALARScalerSmart.t:$(n)' targetID='mcmc' inputName='operator'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)SPSSSCALAR.t:$(n)/linkIdenticalValues=true
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+        </fragment>
+
+
+        <fragment id='SSSCALARBDMMPrimeScalarParameters' spec="beastfx.app.beauti.Fragment">
+            <![CDATA[
+
+            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='$(thisparam)SSSCALARPrior.t:$(n)' x='@$(thisparam)SSSCALAR.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.OneOnX"/>
+            </distribution>
+  		    <operator id='$(thisparam)SSSCALARScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SSSCALAR.t:$(n)"/>
+
+  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='$(thisparam)SSSCALARPriorSmart.t:$(n)' x='@$(thisparam)SSSCALAR.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.OneOnX"/>
+            </distribution>
+  		    <operator id='$(thisparam)SSSCALARScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SSSCALAR.t:$(n)"/>
+            ]]>
+
+            <connect srcID='$(thisparam)SSSCALAR.t:$(n)' targetID='state' inputName='stateNode'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+            <connect srcID='$(thisparam)SSSCALARPrior.t:$(n)' targetID='prior' inputName='distribution'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+            <connect srcID='$(thisparam)SSSCALARScaler.t:$(n)' targetID='mcmc' inputName='operator'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+        </fragment>
+
+        <fragment id="SSSCALARBDMMPrimeJointScaler" spec="beastfx.app.beauti.Fragment">
+            <connect srcID='$(thisparam)SPSSSCALAR.t:$(n)' targetID='JointBDMMPrimeSkylineScaleOperator.t:$(n)' inputName='skylineParameter'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+        </fragment>
+
+        <fragment id="SSSCALARBDMMPrimeChangeTimes" spec="beastfx.app.beauti.Fragment">
+            <![CDATA[
+            <distribution spec="beast.base.inference.distribution.Prior" id='$(thisparam)SSSCALARPrior.t:$(n)' x='@$(thisparam)SSSCALAR.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.Uniform" lower="0.0" upper="10.0"/>
+            </distribution>
+            <operator id="$(thisparam)SSSCALAROperator.t:$(n)" spec="bdmmprime.util.operators.ChangeTimeOperator" scaleFactor="0.75" windowSize="1" weight="3" changeTimes="@$(thisparam)SSSCALAR.t:$(n)"/>
+            ]]>
+
+            <connect srcID='$(thisparam)SSSCALAR.t:$(n)' targetID='state' inputName='stateNode'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+            <connect srcID='$(thisparam)SSSCALARPrior.t:$(n)' targetID='prior' inputName='distribution'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+            <connect srcID="$(thisparam)SSSCALAROperator.t:$(n)" targetID="mcmc" inputName="operator"
+                     if="inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and inposterior($(thisparam)SSSCALAR.t:$(n))
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true" />
+        </fragment>
+
+        <fragment id="SSSCALARBDMMPrimeSkylineLoggers" spec="beastfx.app.beauti.Fragment">
+            <connect srcID='$(thisparam)SPSSSCALAR.t:$(n)' targetID='tracelog' inputName='log'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SPSSSCALAR.t:$(n))
+                     and inposterior(SSSCALARBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)SSSCALAR.t:$(n)/estimate=true'/>
+        </fragment>
+
+    </mergewith>
+
+    <mergewith point='treePriorTemplates'>
+
+        <!-- SSSCALAR parameterization -->
+        <subtemplate id="SSSCALARParameterization" class="bdmmprime.parameterization.SSSCALARParameterization"
+                     suppressInputs="bdmmprime.parameterization.SSSCALARParameterization.typeSet,
+                     bdmmprime.parameterization.SSSCALARParameterization.commonSkyline"
+                     mainid="SSSCALARBDMMPrimeParameterization.t:$(n)">
+
+            <![CDATA[
+
+            <typeTraitSet id="typeTraitSet.t:$(n)" spec="bdmmprime.util.InitializedTraitSet" traitname="type">
+                        <taxa spec="beast.base.evolution.alignment.TaxonSet" alignment="@$(n)"/>
+            </typeTraitSet>
+
+
+            <parameterization id="SSSCALARBDMMPrimeParameterization.t:$(n)"
+                              spec="bdmmprime.parameterization.SSSCALARParameterization">
+                        <processLength idref="originBDMMPrime.t:$(n)"/>
+                        <typeSet idref="typeSetSSBDMMPrime.t:$(n)"/>
+                        <becomeUninfectiousRate id="becomeUninfectiousRateSPSSSCALAR.t:$(n)" spec="bdmmprime.parameterization.SkylineVectorParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)" timesAreAges="true">
+                            <processLength idref="originBDMMPrime.t:$(n)"/>
+                            <skylineValues id="becomeUninfectiousRateSSSCALAR.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0"/>
+                        </becomeUninfectiousRate>
+                        <migrationRate id="migrationRateSPSSSCALAR.t:$(n)" spec="bdmmprime.parameterization.SkylineMatrixParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)" timesAreAges="true">
+                            <processLength idref="originBDMMPrime.t:$(n)"/>
+                            <skylineValues id="migrationRateSSSCALAR.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0" estimate="false"/>
+                        </migrationRate>
+                        <samplingProportion id="samplingProportionSPSSSCALAR.t:$(n)" spec="bdmmprime.parameterization.SkylineVectorParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)" timesAreAges="true">
+                            <processLength idref="originBDMMPrime.t:$(n)"/>
+                            <skylineValues id="samplingProportionSSSCALAR.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="0.1" lower="0.0" upper="1.0"/>
+                        </samplingProportion>
+                        <removalProb id="removalProbSPSSSCALAR.t:$(n)" spec="bdmmprime.parameterization.SkylineVectorParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)" timesAreAges="true">
+                            <processLength idref="originBDMMPrime.t:$(n)"/>
+                            <skylineValues id="removalProbSSSCALAR.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="1.0" lower="0.0" upper="1.0" estimate="false"/>
+                        </removalProb>
+
+                        <rhoSampling id="rhoSamplingProbSPSSSCALAR.t:$(n)" spec="bdmmprime.parameterization.TimedParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)" timesAreAges="true">
+                            <processLength idref="originBDMMPrime.t:$(n)"/>
+                        </rhoSampling>
+
+                        <!-- Super Spreader parameters -->
+                        <CommonChangeTime id="CommonChangeTimeSPSSSCALAR.t:$(n)" spec="bdmmprime.parameterization.TimeOnlySkylineParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)">
+                            <processLength idref="originBDMMPrime.t:$(n)"/>
+                        </CommonChangeTime>
+                        <ReAverage id="ReAverageSPSSSCALAR.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarCommonTimeParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)">
+                            <processLength idref="originBDMMPrime.t:$(n)"/>
+                            <skylineValues id="ReAverageSSSCALAR.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0"/>
+                            <commonSkyline idref="CommonChangeTimeSPSSSCALAR.t:$(n)"/>
+                        </ReAverage>
+                        <SSFrac id="SSFracSPSSSCALAR.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarCommonTimeParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)">
+                            <processLength idref="originBDMMPrime.t:$(n)"/>
+                            <skylineValues id="SSFracSSSCALAR.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0"/>
+                            <commonSkyline idref="CommonChangeTimeSPSSSCALAR.t:$(n)"/>
+                        </SSFrac>
+                        <ReMultiplier id="ReMultiplierSPSSSCALAR.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarCommonTimeParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)">
+                            <processLength idref="originBDMMPrime.t:$(n)"/>
+                            <skylineValues id="ReMultiplierSSSCALAR.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0"/>
+                            <commonSkyline idref="CommonChangeTimeSPSSSCALAR.t:$(n)"/>
+                        </ReMultiplier>
+
+            </parameterization>
+
+            <typeSet id="typeSetSSBDMMPrime.t:$(n)" spec="bdmmprime.parameterization.TypeSet" typeTraitSet="@typeTraitSet.t:$(n)" value="NS,SS" unknownTypeIdentifier="NOT_SET">
+            </typeSet>
+
+            <param id="becomeUninfectiousRateChangeTimesSSSCALAR.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="1.0" lower="0.0" estimate="false"/>
+            <param id="migrationRateChangeTimesSSSCALAR.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="1.0" lower="0.0" estimate="false"/>
+            <param id="samplingProportionChangeTimesSSSCALAR.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="1.0" lower="0.0" estimate="false"/>
+            <param id="removalProbChangeTimesSSSCALAR.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="1.0" lower="0.0" estimate="false"/>
+
+            <param id="CommonChangeTimeChangeTimesSSSCALAR.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="1.0" lower="0.0" estimate="false"/>
+
+
+            <param id="rhoSamplingProbSSSCALAR.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="0.0" estimate="false"/>
+            <param id="rhoSamplingProbTimesSSSCALAR.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="0.0" estimate="false"/>
+            ]]>
+
+            <plate fragment="SSSCALARBDMMPrimeParameters" var="thisparam"
+                   range="becomeUninfectiousRate,migrationRate,samplingProportion,removalProb,rhoSamplingProb"/>
+            <plate fragment="SSSCALARBDMMPrimeScalarParameters" var="thisparam"
+                   range="ReAverage,SSFrac,ReMultiplier"/>
+            <plate fragment="SSSCALARBDMMPrimeJointScaler" var="thisparam"
+                   range="becomeUninfectiousRate,migrationRate"/>
+            <plate fragment="SSSCALARBDMMPrimeChangeTimes" var="thisparam"
+                   range="becomeUninfectiousRateChangeTimes,migrationRateChangeTimes,samplingProportionChangeTimes,removalProbChangeTimes,rhoSamplingProbTimes,CommonChangeTimeChangeTimes"/>
+            <plate fragment="SSSCALARBDMMPrimeSkylineLoggers" var="thisparam"
+                   range="becomeUninfectiousRate,migrationRate,samplingProportion,removalProb,rhoSamplingProb,ReAverage,SSFrac,ReMultiplier,CommonChangeTime"/>
+
+        </subtemplate>
+    </mergewith>
+
+</beast>

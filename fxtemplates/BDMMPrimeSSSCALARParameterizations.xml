@@ -15,20 +15,7 @@
 
     <mergewith point='misc'>
 
-        <fragment id='SuperSpreaderBDMMPrimeParameters' spec="beastfx.app.beauti.Fragment">
-            <![CDATA[
-
-            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='$(thisparam)SuperSpreaderPrior.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
-                   <distr spec="beast.base.inference.distribution.OneOnX"/>
-            </distribution>
-  		    <operator id='$(thisparam)SuperSpreaderScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
-
-  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='$(thisparam)SuperSpreaderPriorSmart.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
-                   <distr spec="beast.base.inference.distribution.OneOnX"/>
-            </distribution>
-  		    <operator id='$(thisparam)SuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
-            ]]>
-
+        <fragment id='SuperSpreaderBDMMPrimeParameterConnection' spec="beastfx.app.beauti.Fragment">
             <connect srcID='$(thisparam)SuperSpreader.t:$(n)' targetID='state' inputName='stateNode'
                      if='inposterior(BDMMPrime.t:$(n))
                      and inposterior(Tree.t:$(n))
@@ -67,8 +54,7 @@
                      and $(thisparam)SuperSpreader.t:$(n)/estimate=true'/>
         </fragment>
 
-
-        <fragment id='SuperSpreaderBDMMPrimeScalarParameters' spec="beastfx.app.beauti.Fragment">
+        <fragment id='SuperSpreaderBDMMPrimeParameters' spec="beastfx.app.beauti.Fragment">
             <![CDATA[
 
             <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='$(thisparam)SuperSpreaderPrior.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
@@ -81,25 +67,51 @@
             </distribution>
   		    <operator id='$(thisparam)SuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
             ]]>
+        </fragment>
 
-            <connect srcID='$(thisparam)SuperSpreader.t:$(n)' targetID='state' inputName='stateNode'
-                     if='inposterior(BDMMPrime.t:$(n))
-                     and inposterior(Tree.t:$(n))
-                     and inposterior($(thisparam)SuperSpreader.t:$(n))
-                     and inposterior(SuperSpreaderBDMMPrimeParameterization.t:$(n))
-                     and $(thisparam)SuperSpreader.t:$(n)/estimate=true'/>
-            <connect srcID='$(thisparam)SuperSpreaderPrior.t:$(n)' targetID='prior' inputName='distribution'
-                     if='inposterior(BDMMPrime.t:$(n))
-                     and inposterior(Tree.t:$(n))
-                     and inposterior($(thisparam)SuperSpreader.t:$(n))
-                     and inposterior(SuperSpreaderBDMMPrimeParameterization.t:$(n))
-                     and $(thisparam)SuperSpreader.t:$(n)/estimate=true'/>
-            <connect srcID='$(thisparam)SuperSpreaderScaler.t:$(n)' targetID='mcmc' inputName='operator'
-                     if='inposterior(BDMMPrime.t:$(n))
-                     and inposterior(Tree.t:$(n))
-                     and inposterior($(thisparam)SuperSpreader.t:$(n))
-                     and inposterior(SuperSpreaderBDMMPrimeParameterization.t:$(n))
-                     and $(thisparam)SuperSpreader.t:$(n)/estimate=true'/>
+        <fragment id='SuperSpreaderBDMMPrimeParametersUniformPrior' spec="beastfx.app.beauti.Fragment">
+            <![CDATA[
+
+            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='$(thisparam)SuperSpreaderPrior.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.Uniform" lower="0.0" upper="1.0"/>
+            </distribution>
+  		    <operator id='$(thisparam)SuperSpreaderScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
+
+  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='$(thisparam)SuperSpreaderPriorSmart.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
+                  <distr spec="beast.base.inference.distribution.Uniform" lower="0.0" upper="1.0"/>
+            </distribution>
+  		    <operator id='$(thisparam)SuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
+            ]]>
+        </fragment>
+
+        <fragment id='SuperSpreaderBDMMPrimeParametersBetaPrior' spec="beastfx.app.beauti.Fragment">
+            <![CDATA[
+
+            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='$(thisparam)SuperSpreaderPrior.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.Beta"><parameter name="alpha" value='1.0' estimate="false"/><parameter name="beta" value='1.0' estimate="false"/></distr>
+            </distribution>
+  		    <operator id='$(thisparam)SuperSpreaderScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
+
+  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='$(thisparam)SuperSpreaderPriorSmart.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.Beta"><parameter name="alpha" value='1.0' estimate="false"/><parameter name="beta" value='1.0' estimate="false"/></distr>
+            </distribution>
+  		    <operator id='$(thisparam)SuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
+            ]]>
+        </fragment>
+
+        <fragment id='SuperSpreaderBDMMPrimeParametersExpPrior' spec="beastfx.app.beauti.Fragment">
+            <![CDATA[
+
+            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='$(thisparam)SuperSpreaderPrior.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
+                <distr spec="beast.base.inference.distribution.Exponential" mean='10' offset='1'/>
+            </distribution>
+  		    <operator id='$(thisparam)SuperSpreaderScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
+
+  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='$(thisparam)SuperSpreaderPriorSmart.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
+                <distr spec="beast.base.inference.distribution.Exponential" mean='10' offset='1'/>
+            </distribution>
+  		    <operator id='$(thisparam)SuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
+            ]]>
         </fragment>
 
         <fragment id="SuperSpreaderBDMMPrimeJointScaler" spec="beastfx.app.beauti.Fragment">
@@ -148,6 +160,15 @@
                      and $(thisparam)SuperSpreader.t:$(n)/estimate=true'/>
         </fragment>
 
+        <fragment id="SuperSpreaderChangeTimeOnlyBDMMPrimeSkylineLoggers" spec="beastfx.app.beauti.Fragment">
+            <connect srcID='$(thisparam)SPSuperSpreader.t:$(n)' targetID='tracelog' inputName='log'
+                     if='inposterior(BDMMPrime.t:$(n))
+                     and inposterior(Tree.t:$(n))
+                     and inposterior($(thisparam)SPSuperSpreader.t:$(n))
+                     and inposterior(SuperSpreaderBDMMPrimeParameterization.t:$(n))
+                     and $(thisparam)ChangeTimesSuperSpreader.t:$(n)/estimate=true'/>
+        </fragment>
+
     </mergewith>
 
     <mergewith point='treePriorTemplates'>
@@ -160,60 +181,55 @@
 
             <![CDATA[
 
-            <typeTraitSet id="typeTraitSet.t:$(n)" spec="bdmmprime.util.InitializedTraitSet" traitname="type">
-                        <taxa spec="beast.base.evolution.alignment.TaxonSet" alignment="@$(n)"/>
-            </typeTraitSet>
-
 
             <parameterization id="SuperSpreaderBDMMPrimeParameterization.t:$(n)"
                               spec="bdmmprime.parameterization.SuperSpreaderParameterization">
                         <processLength idref="originBDMMPrime.t:$(n)"/>
-                        <typeSet idref="typeSetSSBDMMPrime.t:$(n)"/>
-                        <becomeUninfectiousRate id="becomeUninfectiousRateSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineVectorParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)" timesAreAges="true">
+                        <typeSet idref="typeSetBDMMPrime.t:$(n)"/>
+                        <becomeUninfectiousRate id="becomeUninfectiousRateSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineVectorParameter" typeSet="@typeSetBDMMPrime.t:$(n)" timesAreAges="true">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                             <skylineValues id="becomeUninfectiousRateSuperSpreader.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0"/>
                         </becomeUninfectiousRate>
-                        <migrationRate id="migrationRateSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineMatrixParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)" timesAreAges="true">
+                        <migrationRate id="migrationRateSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineMatrixParameter" typeSet="@typeSetBDMMPrime.t:$(n)" timesAreAges="true">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                             <skylineValues id="migrationRateSuperSpreader.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0" estimate="false"/>
                         </migrationRate>
-                        <samplingProportion id="samplingProportionSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineVectorParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)" timesAreAges="true">
+                        <samplingProportion id="samplingProportionSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineVectorParameter" typeSet="@typeSetBDMMPrime.t:$(n)" timesAreAges="true">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                             <skylineValues id="samplingProportionSuperSpreader.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="0.1" lower="0.0" upper="1.0"/>
                         </samplingProportion>
-                        <removalProb id="removalProbSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineVectorParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)" timesAreAges="true">
+                        <removalProb id="removalProbSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineVectorParameter" typeSet="@typeSetBDMMPrime.t:$(n)" timesAreAges="true">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                             <skylineValues id="removalProbSuperSpreader.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="1.0" lower="0.0" upper="1.0" estimate="false"/>
                         </removalProb>
 
-                        <rhoSampling id="rhoSamplingProbSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.TimedParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)" timesAreAges="true">
+                        <rhoSampling id="rhoSamplingProbSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.TimedParameter" typeSet="@typeSetBDMMPrime.t:$(n)" timesAreAges="true">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                         </rhoSampling>
 
                         <!-- Super Spreader parameters -->
-                        <CommonChangeTime id="CommonChangeTimeSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.TimeOnlySkylineParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)">
+                        <CommonChangeTime id="CommonChangeTimeSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.TimeOnlySkylineParameter" typeSet="@typeSetBDMMPrime.t:$(n)" timesAreAges="true">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                         </CommonChangeTime>
-                        <ReAverage id="ReAverageSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarCommonTimeParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)">
+                        <ReAverage id="ReAverageSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarWithCommonTimeParameter" typeSet="@typeSetBDMMPrime.t:$(n)">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                             <skylineValues id="ReAverageSuperSpreader.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0"/>
                             <commonSkyline idref="CommonChangeTimeSPSuperSpreader.t:$(n)"/>
                         </ReAverage>
-                        <SSFrac id="SSFracSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarCommonTimeParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)">
+                        <SSFrac id="SSFracSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarWithCommonTimeParameter" typeSet="@typeSetBDMMPrime.t:$(n)">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
-                            <skylineValues id="SSFracSuperSpreader.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0"/>
+                            <skylineValues id="SSFracSuperSpreader.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="0.1" lower="0.0" upper="1.0"/>
                             <commonSkyline idref="CommonChangeTimeSPSuperSpreader.t:$(n)"/>
                         </SSFrac>
-                        <ReMultiplier id="ReMultiplierSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarCommonTimeParameter" typeSet="@typeSetSSBDMMPrime.t:$(n)">
+                        <ReMultiplier id="ReMultiplierSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarWithCommonTimeParameter" typeSet="@typeSetBDMMPrime.t:$(n)">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
-                            <skylineValues id="ReMultiplierSuperSpreader.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0"/>
+                            <skylineValues id="ReMultiplierSuperSpreader.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.1" lower="1.0"/>
                             <commonSkyline idref="CommonChangeTimeSPSuperSpreader.t:$(n)"/>
                         </ReMultiplier>
 
             </parameterization>
 
-            <typeSet id="typeSetSSBDMMPrime.t:$(n)" spec="bdmmprime.parameterization.TypeSet" typeTraitSet="@typeTraitSet.t:$(n)" value="NS,SS" unknownTypeIdentifier="NOT_SET">
-            </typeSet>
+
 
             <param id="becomeUninfectiousRateChangeTimesSuperSpreader.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="1.0" lower="0.0" estimate="false"/>
             <param id="migrationRateChangeTimesSuperSpreader.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="1.0" lower="0.0" estimate="false"/>
@@ -228,15 +244,23 @@
             ]]>
 
             <plate fragment="SuperSpreaderBDMMPrimeParameters" var="thisparam"
-                   range="becomeUninfectiousRate,migrationRate,samplingProportion,removalProb,rhoSamplingProb"/>
-            <plate fragment="SuperSpreaderBDMMPrimeScalarParameters" var="thisparam"
-                   range="ReAverage,SSFrac,ReMultiplier"/>
+                   range="becomeUninfectiousRate,migrationRate,removalProb,rhoSamplingProb,ReAverage"/>
+            <plate fragment="SuperSpreaderBDMMPrimeParametersUniformPrior" var="thisparam"
+                   range="samplingProportion"/>
+            <plate fragment="SuperSpreaderBDMMPrimeParametersBetaPrior" var="thisparam"
+                   range="SSFrac"/>
+            <plate fragment="SuperSpreaderBDMMPrimeParametersExpPrior" var="thisparam"
+                   range="ReMultiplier"/>
+            <plate fragment="SuperSpreaderBDMMPrimeParameterConnection" var="thisparam"
+                   range="becomeUninfectiousRate,migrationRate,samplingProportion,removalProb,rhoSamplingProb,ReAverage,SSFrac,ReMultiplier"/>
             <plate fragment="SuperSpreaderBDMMPrimeJointScaler" var="thisparam"
                    range="becomeUninfectiousRate,migrationRate"/>
             <plate fragment="SuperSpreaderBDMMPrimeChangeTimes" var="thisparam"
                    range="becomeUninfectiousRateChangeTimes,migrationRateChangeTimes,samplingProportionChangeTimes,removalProbChangeTimes,rhoSamplingProbTimes,CommonChangeTimeChangeTimes"/>
             <plate fragment="SuperSpreaderBDMMPrimeSkylineLoggers" var="thisparam"
                    range="becomeUninfectiousRate,migrationRate,samplingProportion,removalProb,rhoSamplingProb,ReAverage,SSFrac,ReMultiplier,CommonChangeTime"/>
+            <plate fragment="SuperSpreaderChangeTimeOnlyBDMMPrimeSkylineLoggers" var="thisparam"
+                   range="CommonChangeTime"/>
 
         </subtemplate>
     </mergewith>

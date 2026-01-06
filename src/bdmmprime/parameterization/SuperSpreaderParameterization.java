@@ -1,7 +1,14 @@
 package bdmmprime.parameterization;
 
+import beast.base.core.Citation;
 import beast.base.core.Input;
 
+
+@Citation(value = """
+        Stadler T, Bonhoeffer S. (2013). Uncovering epidemiological dynamics in heterogeneous host\s
+        populations using phylogenetic methods. \s
+        Philos Trans R Soc Lond B Biol Sci; 368 (1614): 20120198."""
+        , DOI = "10.1098/rstb.2012.0198", year = 2013, firstAuthorSurname = "Stadler")
 public class SuperSpreaderParameterization extends Parameterization {
 
     public Input<SkylineVectorParameter> becomeUninfectiousRateInput = new Input<>("becomeUninfectiousRate",
@@ -19,17 +26,28 @@ public class SuperSpreaderParameterization extends Parameterization {
     public Input<SkylineMatrixParameter> migRateInput = new Input<>("migrationRate",
             "Migration rate skyline.");
 
+    // Don't be fooled by your IDE, this is used.
     public Input<TimeOnlySkylineParameter> CommonChangeTimeInput = new Input<>("CommonChangeTime",
-            "Reproduction number multiplier skyline.", Input.Validate.REQUIRED);
+            "Shared change times for ReAverage, SSFrac and ReMultiplier.", Input.Validate.REQUIRED);
 
-    public Input<SkylineScalarCommonTimeParameter> ReAverageInput = new Input<>("ReAverage",
+    public Input<SkylineScalarWithCommonTimeParameter> ReAverageInput = new Input<>("ReAverage",
             "Reproduction number average skyline.", Input.Validate.REQUIRED);
 
-    public Input<SkylineScalarCommonTimeParameter> SSFracInput = new Input<>("SSFrac",
+    public Input<SkylineScalarWithCommonTimeParameter> SSFracInput = new Input<>("SSFrac",
             "Super-spreader fraction skyline.", Input.Validate.REQUIRED);
 
-    public Input<SkylineScalarCommonTimeParameter> ReMultiplierInput = new Input<>("ReMultiplier",
+    public Input<SkylineScalarWithCommonTimeParameter> ReMultiplierInput = new Input<>("ReMultiplier",
             "Reproduction number multiplier skyline.", Input.Validate.REQUIRED);
+
+
+
+
+    @Override
+    public void initAndValidate() {
+        typeSetInput.get().unknownTypeIndicatorInput.set("NOT_SET");
+        typeSetInput.get().valueInput.set("NS,SS");
+        super.initAndValidate();
+    }
 
     @Override
     public double[] getMigRateChangeTimes() {
@@ -45,8 +63,6 @@ public class SuperSpreaderParameterization extends Parameterization {
     public double[] getBirthRateChangeTimes() {
         birthRateChangeTimes = combineAndSortTimes(birthRateChangeTimes,
                 ReAverageInput.get().getChangeTimes(),
-                SSFracInput.get().getChangeTimes(),
-                ReMultiplierInput.get().getChangeTimes(),
                 becomeUninfectiousRateInput.get().getChangeTimes());
 
         return birthRateChangeTimes;
@@ -59,8 +75,6 @@ public class SuperSpreaderParameterization extends Parameterization {
     public double[] getCrossBirthRateChangeTimes() {
         crossBirthRateChangeTimes = combineAndSortTimes(crossBirthRateChangeTimes,
                 ReAverageInput.get().getChangeTimes(),
-                SSFracInput.get().getChangeTimes(),
-                ReMultiplierInput.get().getChangeTimes(),
                 becomeUninfectiousRateInput.get().getChangeTimes());
 
         return crossBirthRateChangeTimes;

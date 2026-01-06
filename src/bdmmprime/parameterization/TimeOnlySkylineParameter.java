@@ -1,33 +1,18 @@
 package bdmmprime.parameterization;
 
-import beast.base.core.Function;
 import beast.base.core.Input;
-
 import java.io.PrintStream;
 
-public class TimeOnlySkylineParameter extends SkylineParameter{
+
+/**
+ * A Skyline parameter with no values, only the time changes. It extends the SkylineParameter class in order to benefit
+ * from the epochVisualizer in its beauti editor.
+ */
+public class TimeOnlySkylineParameter extends SkylineParameter {
 
 
     public TimeOnlySkylineParameter() {
         skylineValuesInput.setRule(Input.Validate.FORBIDDEN);
-    }
-
-
-    public TimeOnlySkylineParameter(Function changeTimesParam,
-                                    int nTypes,
-                                    Function processLength) {
-        // unused
-
-        changeTimesInput.setValue(changeTimesParam, this);
-        typeSetInput.setValue(new TypeSet(nTypes), this);
-
-        if (processLength != null) {
-            this.timesAreAgesInput.setValue(true, this);
-            this.processLengthInput.setValue(processLength, this);
-        }
-        typeSetInput.setValue(new TypeSet(nTypes), this);
-
-        initAndValidate();
     }
 
 
@@ -54,15 +39,10 @@ public class TimeOnlySkylineParameter extends SkylineParameter{
     @Override
     public void init(PrintStream out) {
 
-        for (int interval=0; interval<nIntervals; interval++) {
+        for (int interval = 0; interval < nIntervals; interval++) {
 
-            if (interval < nIntervals-1)
+            if (interval < nIntervals - 1)
                 out.print(getID() + "i" + interval + "_endtime\t");
-
-            out.print(getID());
-
-            if (nIntervals > 1)
-                out.print("i" + interval);
 
             out.print("\t");
 
@@ -76,9 +56,11 @@ public class TimeOnlySkylineParameter extends SkylineParameter{
     @Override
     public void log(long sample, PrintStream out) {
 
-        for (int interval=0; interval<nIntervals; interval++) {
+        updateTimes();
 
-            if (interval<nIntervals-1)
+        for (int interval = 0; interval < nIntervals; interval++) {
+
+            if (interval < nIntervals - 1)
                 out.print(times[interval] + "\t");
 
         }
@@ -86,13 +68,16 @@ public class TimeOnlySkylineParameter extends SkylineParameter{
 
     @Override
     public String toString() {
+
+        updateTimes();
+
         StringBuilder sb = new StringBuilder();
         sb.append(super.toString());
 
         sb.append(":");
-        for (int i=0; i<getChangeCount()+1; i++) {
-            if (i>0)
-                sb.append(" (change time ").append(times[i-1]).append(")");
+        for (int i = 0; i < getChangeCount() + 1; i++) {
+            if (i > 0)
+                sb.append(" (change time ").append(times[i - 1]).append(")");
         }
 
         return sb.toString();

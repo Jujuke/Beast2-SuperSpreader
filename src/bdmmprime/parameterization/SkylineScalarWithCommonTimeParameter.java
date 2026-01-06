@@ -23,15 +23,21 @@ import beast.base.core.Input;
 import java.io.PrintStream;
 import java.util.Arrays;
 
-public class SkylineScalarCommonTimeParameter extends SkylineParameter {
+/**
+ * This class is a simple case of skyline parameter that is always scalar and with time change given by a shared Input
+ * parameter. It inherits the SkylineParameter class so that its editor can inherit the SkylineInputEditor.
+ */
+public class SkylineScalarWithCommonTimeParameter extends SkylineParameter {
 
     public Input<TimeOnlySkylineParameter> commonSkylineInput = new Input<>("commonSkyline",
-            "True if skyline times are given externally to be shared with other parameters", Input.Validate.REQUIRED);
+            "shared Skyline times for the super spreader parameterization", Input.Validate.REQUIRED);
 
     double[] values, storedValues;
     double valuesAtTime;
 
-    public SkylineScalarCommonTimeParameter() { }
+    public SkylineScalarWithCommonTimeParameter() {
+    }
+
 
     @Override
     public void initAndValidate() {
@@ -47,9 +53,9 @@ public class SkylineScalarCommonTimeParameter extends SkylineParameter {
                     "when times are given as ages and/or when times are relative.");
 
 
-        times = new double[nIntervals-1];
+        times = new double[nIntervals - 1];
 
-        storedTimes = new double[nIntervals-1];
+        storedTimes = new double[nIntervals - 1];
 
         if (skylineValuesInput.get().getDimension() % nIntervals != 0)
             throw new IllegalArgumentException("Value parameter dimension must " +
@@ -67,10 +73,10 @@ public class SkylineScalarCommonTimeParameter extends SkylineParameter {
     @Override
     protected void updateTimes() {
 
-        if (nIntervals==1)
+        if (nIntervals == 1)
             return;
 
-        for (int i=0; i<nIntervals-1; i++)
+        for (int i = 0; i < nIntervals - 1; i++)
             times[i] = commonSkylineInput.get().changeTimesInput.get().getArrayValue(i);
 
 
@@ -78,7 +84,7 @@ public class SkylineScalarCommonTimeParameter extends SkylineParameter {
 
             double startAge = processLengthInput.get().getArrayValue();
 
-            for (int i=0; i<times.length; i++)
+            for (int i = 0; i < times.length; i++)
                 times[i] *= startAge;
         }
 
@@ -87,8 +93,8 @@ public class SkylineScalarCommonTimeParameter extends SkylineParameter {
 
             double startAge = processLengthInput.get().getArrayValue();
 
-            for (int i=0; i<times.length; i++)
-                times[i] = startAge-times[i];
+            for (int i = 0; i < times.length; i++)
+                times[i] = startAge - times[i];
         }
     }
 
@@ -96,7 +102,7 @@ public class SkylineScalarCommonTimeParameter extends SkylineParameter {
     @Override
     protected void updateValues() {
 
-        for (int interval=0; interval<nIntervals; interval++) {
+        for (int interval = 0; interval < nIntervals; interval++) {
             values[interval] = skylineValuesInput.get().getArrayValue(interval);
         }
 
@@ -133,7 +139,7 @@ public class SkylineScalarCommonTimeParameter extends SkylineParameter {
     protected void restore() {
         super.restore();
 
-        double [] tmp;
+        double[] tmp;
         tmp = values;
         values = storedValues;
         storedValues = tmp;
@@ -146,10 +152,7 @@ public class SkylineScalarCommonTimeParameter extends SkylineParameter {
     @Override
     public void init(PrintStream out) {
 
-        for (int interval=0; interval<nIntervals; interval++) {
-
-            if (interval < nIntervals-1)
-                out.print(getID() + "i" + interval + "_endtime\t");
+        for (int interval = 0; interval < nIntervals; interval++) {
 
             out.print(getID());
 
@@ -164,11 +167,7 @@ public class SkylineScalarCommonTimeParameter extends SkylineParameter {
     @Override
     public void log(long sample, PrintStream out) {
 
-        for (int interval=0; interval<nIntervals; interval++) {
-
-            if (interval<nIntervals-1)
-                out.print(times[interval] + "\t");
-
+        for (int interval = 0; interval < nIntervals; interval++) {
             out.print(values[interval] + "\t");
         }
     }
@@ -183,9 +182,9 @@ public class SkylineScalarCommonTimeParameter extends SkylineParameter {
         sb.append(super.toString());
 
         sb.append(":");
-        for (int i=0; i<getChangeCount()+1; i++) {
-            if (i>0)
-                sb.append(" (change time ").append(times[i-1]).append(")");
+        for (int i = 0; i < getChangeCount() + 1; i++) {
+            if (i > 0)
+                sb.append(" (change time ").append(times[i - 1]).append(")");
             sb.append(" ").append(Arrays.toString(values));
         }
 

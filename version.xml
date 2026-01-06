@@ -3,11 +3,11 @@
 
 <service type="beast.base.core.BEASTInterface">
     <provider classname="bdmmprime.parameterization.SuperSpreaderParameterization"/>
-    <provider classname="bdmmprime.parameterization.SkylineScalarCommonTimeParameter"/>
+    <provider classname="bdmmprime.parameterization.SkylineScalarWithCommonTimeParameter"/>
     <provider classname="bdmmprime.parameterization.TimeOnlySkylineParameter"/>
 </service>
 <service type="beastfx.app.inputeditor.InputEditor">
-    <provider classname="bdmmprime.beauti.SkylineScalarCommonTimeInputEditor"/>
+    <provider classname="bdmmprime.beauti.SkylineScalarWithCommonTimeInputEditor"/>
     <provider classname="bdmmprime.beauti.TimeOnlySkylineInputEditor"/>
 </service>
 </package>

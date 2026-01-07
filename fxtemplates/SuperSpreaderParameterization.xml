@@ -69,51 +69,6 @@
             ]]>
         </fragment>
 
-        <fragment id='SuperSpreaderBDMMPrimeParametersUniformPrior' spec="beastfx.app.beauti.Fragment">
-            <![CDATA[
-
-            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='$(thisparam)SuperSpreaderPrior.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
-                   <distr spec="beast.base.inference.distribution.Uniform" lower="0.0" upper="1.0"/>
-            </distribution>
-  		    <operator id='$(thisparam)SuperSpreaderScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
-
-  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='$(thisparam)SuperSpreaderPriorSmart.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
-                  <distr spec="beast.base.inference.distribution.Uniform" lower="0.0" upper="1.0"/>
-            </distribution>
-  		    <operator id='$(thisparam)SuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
-            ]]>
-        </fragment>
-
-        <fragment id='SuperSpreaderBDMMPrimeParametersBetaPrior' spec="beastfx.app.beauti.Fragment">
-            <![CDATA[
-
-            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='$(thisparam)SuperSpreaderPrior.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
-                   <distr spec="beast.base.inference.distribution.Beta"><parameter name="alpha" value='1.0' estimate="false"/><parameter name="beta" value='1.0' estimate="false"/></distr>
-            </distribution>
-  		    <operator id='$(thisparam)SuperSpreaderScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
-
-  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='$(thisparam)SuperSpreaderPriorSmart.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
-                   <distr spec="beast.base.inference.distribution.Beta"><parameter name="alpha" value='1.0' estimate="false"/><parameter name="beta" value='1.0' estimate="false"/></distr>
-            </distribution>
-  		    <operator id='$(thisparam)SuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
-            ]]>
-        </fragment>
-
-        <fragment id='SuperSpreaderBDMMPrimeParametersExpPrior' spec="beastfx.app.beauti.Fragment">
-            <![CDATA[
-
-            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='$(thisparam)SuperSpreaderPrior.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
-                <distr spec="beast.base.inference.distribution.Exponential" mean='10' offset='1'/>
-            </distribution>
-  		    <operator id='$(thisparam)SuperSpreaderScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
-
-  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='$(thisparam)SuperSpreaderPriorSmart.t:$(n)' x='@$(thisparam)SuperSpreader.t:$(n)'>
-                <distr spec="beast.base.inference.distribution.Exponential" mean='10' offset='1'/>
-            </distribution>
-  		    <operator id='$(thisparam)SuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@$(thisparam)SuperSpreader.t:$(n)"/>
-            ]]>
-        </fragment>
-
         <fragment id="SuperSpreaderBDMMPrimeJointScaler" spec="beastfx.app.beauti.Fragment">
             <connect srcID='$(thisparam)SPSuperSpreader.t:$(n)' targetID='JointBDMMPrimeSkylineScaleOperator.t:$(n)' inputName='skylineParameter'
                      if='inposterior(BDMMPrime.t:$(n))
@@ -241,16 +196,47 @@
 
             <param id="rhoSamplingProbSuperSpreader.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="0.0" estimate="false"/>
             <param id="rhoSamplingProbTimesSuperSpreader.t:$(n)" spec="beast.base.inference.parameter.RealParameter" value="0.0" estimate="false"/>
+
+
+            <!-- Specific prior for samplingProportion -->
+            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='samplingProportionSuperSpreaderPrior.t:$(n)' x='@samplingProportionSuperSpreader.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.Uniform" lower="0.0" upper="1.0"/>
+            </distribution>
+  		    <operator id='samplingProportionSuperSpreaderScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@samplingProportionSuperSpreader.t:$(n)"/>
+
+  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='samplingProportionSuperSpreaderPriorSmart.t:$(n)' x='@samplingProportionSuperSpreader.t:$(n)'>
+                  <distr spec="beast.base.inference.distribution.Uniform" lower="0.0" upper="1.0"/>
+            </distribution>
+  		    <operator id='samplingProportionSuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@samplingProportionSuperSpreader.t:$(n)"/>
+
+
+            <!-- Specific prior for SSFrac -->
+            <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='SSFracSuperSpreaderPrior.t:$(n)' x='@SSFracSuperSpreader.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.Beta"><parameter name="alpha" value='1.0' estimate="false"/><parameter name="beta" value='1.0' estimate="false"/></distr>
+            </distribution>
+  		    <operator id='SSFracSuperSpreaderScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@SSFracSuperSpreader.t:$(n)"/>
+
+  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='SSFracSuperSpreaderPriorSmart.t:$(n)' x='@SSFracSuperSpreader.t:$(n)'>
+                   <distr spec="beast.base.inference.distribution.Beta"><parameter name="alpha" value='1.0' estimate="false"/><parameter name="beta" value='1.0' estimate="false"/></distr>
+            </distribution>
+  		    <operator id='SSFracSuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@SSFracSuperSpreader.t:$(n)"/>
+
+
+  		    <!-- Specific prior for ReMultiplier -->
+  		    <distribution spec="bdmmprime.util.priors.ZeroExcludingPrior" id='ReMultiplierSuperSpreaderPrior.t:$(n)' x='@ReMultiplierSuperSpreader.t:$(n)'>
+                <distr spec="beast.base.inference.distribution.Exponential" mean='10'/>
+            </distribution>
+  		    <operator id='ReMultiplierSuperSpreaderScaler.t:$(n)' spec='ScaleOperator' scaleFactor="0.75" weight="3" parameter="@ReMultiplierSuperSpreader.t:$(n)"/>
+
+  		    <distribution spec="bdmmprime.util.priors.SmartZeroExcludingPrior" id='ReMultiplierSuperSpreaderPriorSmart.t:$(n)' x='@ReMultiplierSuperSpreader.t:$(n)'>
+                <distr spec="beast.base.inference.distribution.Exponential" mean='10'/>
+            </distribution>
+  		    <operator id='ReMultiplierSuperSpreaderScalerSmart.t:$(n)' spec='bdmmprime.util.operators.SmartScaleOperator' scaleFactor="0.75" weight="3" parameter="@ReMultiplierSuperSpreader.t:$(n)"/>
+
             ]]>
 
             <plate fragment="SuperSpreaderBDMMPrimeParameters" var="thisparam"
                    range="becomeUninfectiousRate,migrationRate,removalProb,rhoSamplingProb,ReAverage"/>
-            <plate fragment="SuperSpreaderBDMMPrimeParametersUniformPrior" var="thisparam"
-                   range="samplingProportion"/>
-            <plate fragment="SuperSpreaderBDMMPrimeParametersBetaPrior" var="thisparam"
-                   range="SSFrac"/>
-            <plate fragment="SuperSpreaderBDMMPrimeParametersExpPrior" var="thisparam"
-                   range="ReMultiplier"/>
             <plate fragment="SuperSpreaderBDMMPrimeParameterConnection" var="thisparam"
                    range="becomeUninfectiousRate,migrationRate,samplingProportion,removalProb,rhoSamplingProb,ReAverage,SSFrac,ReMultiplier"/>
             <plate fragment="SuperSpreaderBDMMPrimeJointScaler" var="thisparam"

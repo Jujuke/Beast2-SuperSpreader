@@ -46,6 +46,7 @@ public class SuperSpreaderParameterization extends Parameterization {
     public void initAndValidate() {
         typeSetInput.get().unknownTypeIndicatorInput.set("NOT_SET");
         typeSetInput.get().valueInput.set("NS,SS");
+        nTypes = 2;
         super.initAndValidate();
     }
 

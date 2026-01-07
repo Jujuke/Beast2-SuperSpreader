@@ -182,31 +182,23 @@ public class SkylineScalarWithCommonTimeInputEditor extends SkylineInputEditor {
     }
 
     /**
-     * Ugly hack to keep update the type trait set panel and the equilibrium frequencies..
+     * Hack to update the type trait set panel and the equilibrium frequencies..
      */
     void updateFrequenciesForSSFrac() {
 
         for (BEASTInterface beastInterface : skylineParameter.getOutputs()) {
-            System.out.println("JKE checking class of beastInterface = " + beastInterface);
             if (!(beastInterface instanceof SuperSpreaderParameterization parameterization))
                 continue;
-
             if (!parameterization.SSFracInput.get().equals(skylineParameter)) {
-                System.out.println("JKE not happy with the parameterizationInput = " + parameterization.SSFracInput.get());
                 continue;
             }
-
             for (BEASTInterface beastInterfaceSuper : parameterization.getOutputs()) {
-                System.out.println("JKE 1");
                 if (!(beastInterfaceSuper instanceof BirthDeathMigrationDistribution bdmmDistr)) {
-                    System.out.println("JKE 2");
                     continue;
                 }
-                System.out.println("JKE 3");
                 TypeSet typeSet = bdmmDistr.parameterizationInput.get().typeSetInput.get();
                 typeSet.initAndValidate();
                 int nTypes = typeSet.getNTypes();
-                System.out.println("JKE nTypes = " + nTypes);
 
                 RealParameter startTypeProbs = (RealParameter) bdmmDistr.startTypePriorProbsInput.get();
                 TraitSet traitSet = bdmmDistr.typeTraitSetInput.get();
@@ -216,14 +208,16 @@ public class SkylineScalarWithCommonTimeInputEditor extends SkylineInputEditor {
 
                 startTypeProbs.setDimension(nTypes);
                 startTypeProbs.valuesInput.setValue((1.0 - ssfrac) + " " + ssfrac, startTypeProbs);
-                System.out.println("JKE startTypeProbs.valuesInput.value = " + startTypeProbs.valuesInput.get());
 
                 try {
                     startTypeProbs.initAndValidate();
-                    traitSet.initAndValidate();
-                    bdmmDistr.initAndValidate();
                 } catch (Exception ex) {
-                    System.err.println("Error updating start type probabilities.");
+                    System.err.println("Error updating startTypeProbs.");
+                }
+                try {
+                    traitSet.initAndValidate();
+                } catch (Exception ex) {
+                    System.err.println("Error updating traitSet.");
                 }
             }
         }

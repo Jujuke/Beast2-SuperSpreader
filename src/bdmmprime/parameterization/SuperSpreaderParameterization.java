@@ -4,11 +4,10 @@ import beast.base.core.Citation;
 import beast.base.core.Input;
 
 
-@Citation(value = """
-        Stadler T, Bonhoeffer S. (2013). Uncovering epidemiological dynamics in heterogeneous host\s
-        populations using phylogenetic methods. \s
-        Philos Trans R Soc Lond B Biol Sci; 368 (1614): 20120198."""
-        , DOI = "10.1098/rstb.2012.0198", year = 2013, firstAuthorSurname = "Stadler")
+@Citation(value = "Stadler T, Bonhoeffer S. (2013). Uncovering epidemiological dynamics in heterogeneous host" +
+        "populations using phylogenetic methods." +
+        "Philos Trans R Soc Lond B Biol Sci; 368 (1614): 20120198.",
+        DOI = "10.1098/rstb.2012.0198", year = 2013, firstAuthorSurname = "Stadler")
 public class SuperSpreaderParameterization extends Parameterization {
 
     public Input<SkylineVectorParameter> becomeUninfectiousRateInput = new Input<>("becomeUninfectiousRate",

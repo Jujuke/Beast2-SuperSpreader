@@ -61,7 +61,7 @@ public class SkylineScalarWithCommonTimeParameter extends SkylineParameter {
             throw new IllegalArgumentException("Value parameter dimension must " +
                     "be a multiple of the number of intervals.");
 
-        nTypes = 1;
+        nTypes = 1; //JKE
 
         values = new double[nIntervals];
         storedValues = new double[nIntervals];
@@ -122,10 +122,6 @@ public class SkylineScalarWithCommonTimeParameter extends SkylineParameter {
         valuesAtTime = values[intervalIdx];
 
         return valuesAtTime;
-    }
-
-    public int getNTypes() {
-        return nTypes;
     }
 
     @Override

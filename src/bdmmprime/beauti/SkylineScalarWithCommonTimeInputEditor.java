@@ -79,7 +79,7 @@ public class SkylineScalarWithCommonTimeInputEditor extends SkylineInputEditor {
         estimateValuesCheckBox.setSelected(valuesParameter.isEstimatedInput.get());
         boxHoriz.getChildren().add(estimateValuesCheckBox);
         CheckBox linkValuesCheckBox = new CheckBox("Link identical values");
-        linkValuesCheckBox.setSelected(skylineParameter.linkIdenticalValuesInput.get());
+        linkValuesCheckBox.setSelected(skylineScalarWithCommonTimeParameter.linkIdenticalValuesInput.get());
         boxHoriz.getChildren().add(linkValuesCheckBox);
         mainInputBox.getChildren().add(boxHoriz);
 
@@ -187,15 +187,17 @@ public class SkylineScalarWithCommonTimeInputEditor extends SkylineInputEditor {
     void updateFrequenciesForSSFrac() {
 
         for (BEASTInterface beastInterface : skylineParameter.getOutputs()) {
-            if (!(beastInterface instanceof SuperSpreaderParameterization parameterization))
+            if (!(beastInterface instanceof SuperSpreaderParameterization))
                 continue;
+            SuperSpreaderParameterization parameterization = (SuperSpreaderParameterization)beastInterface;
             if (!parameterization.SSFracInput.get().equals(skylineParameter)) {
                 continue;
             }
             for (BEASTInterface beastInterfaceSuper : parameterization.getOutputs()) {
-                if (!(beastInterfaceSuper instanceof BirthDeathMigrationDistribution bdmmDistr)) {
+                if (!(beastInterfaceSuper instanceof BirthDeathMigrationDistribution)) {
                     continue;
                 }
+                BirthDeathMigrationDistribution bdmmDistr = (BirthDeathMigrationDistribution)beastInterfaceSuper;
                 TypeSet typeSet = bdmmDistr.parameterizationInput.get().typeSetInput.get();
                 typeSet.initAndValidate();
                 int nTypes = typeSet.getNTypes();

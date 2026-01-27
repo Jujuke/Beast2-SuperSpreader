@@ -1,36 +1,64 @@
 /*
- * Copyright (C) 2019-2024 ETH Zurich
+ * Copyright (C) 2026 Institut Pasteur PARIS
  *
- * This program is free software: you can redistribute it and/or modify
+ * This file is part of the SuperSpreader BEAST module project.
+ *
+ * SuperSpreader is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * See the COPYING file for details.
  */
 
-package bdmmprime.parameterization;
+package superspreader.parameterization;
 
+import bdmmprime.parameterization.TypeSet;
 import bdmmprime.util.Utils;
+import beast.base.core.Function;
 import beast.base.core.Input;
+import beast.base.core.Loggable;
+import beast.base.inference.CalculationNode;
 
 import java.io.PrintStream;
 import java.util.Arrays;
 
 /**
  * This class is a simple case of skyline parameter that is always scalar and with time change given by a shared Input
- * parameter. It inherits the SkylineParameter class so that its editor can inherit the SkylineInputEditor.
+ * parameter.
+ * This class reuses and adapts logic from {@link bdmmprime.parameterization.SkylineParameter},
+ * and {@link bdmmprime.parameterization.SkylineVectorParameter}
  */
-public class SkylineScalarWithCommonTimeParameter extends SkylineParameter {
+public class SkylineScalarWithCommonTimeParameter extends CalculationNode implements Loggable {
 
     public Input<TimeOnlySkylineParameter> commonSkylineInput = new Input<>("commonSkyline",
             "shared Skyline times for the super spreader parameterization", Input.Validate.REQUIRED);
+
+    public Input<Function> skylineValuesInput = new Input<>("skylineValues",
+            "Parameter specifying parameter values through time.",
+            Input.Validate.REQUIRED);
+
+    public Input<Function> processLengthInput = new Input<>("processLength",
+            "Time between start of process and the end.");
+
+    public Input<TypeSet> typeSetInput = new Input<>("typeSet",
+            "Type set defining distinct types in model. Used when a" +
+                    "single value is to be shared amongst several types.");
+
+    public Input<Boolean> linkIdenticalValuesInput = new Input<>("linkIdenticalValues",
+            "BEAUti hint to create XMLs in which identical values are considered " +
+                    "linked. WARNING: The value of this input usually has no impact " +
+                    "outside of BEAUti!",
+            false);
+
+    public boolean timesAreAges, timesAreRelative;
+
+    public double[] times, storedTimes;
+
+    public int nIntervals, nTypes;
+
+    public boolean isDirty;
+
 
     double[] values, storedValues;
     double valuesAtTime;
@@ -64,17 +92,47 @@ public class SkylineScalarWithCommonTimeParameter extends SkylineParameter {
         nTypes = 1; //JKE
 
         values = new double[nIntervals];
+
         storedValues = new double[nIntervals];
 
         isDirty = true;
-
     }
 
-    @Override
+    public int getNTypes() {
+
+        return nTypes;
+    }
+
+    /**
+     * @return times (not ages) when parameter changes.
+     */
+    public double[] getChangeTimes() {
+        update();
+
+        return times;
+	}
+
+	public int getChangeCount() {
+        update();
+
+        return times.length;
+    }
+
+
+	protected void update() {
+	    if (!isDirty)
+	        return;
+
+	    updateTimes();
+	    updateValues();
+
+        isDirty = false;
+    }
+
     protected void updateTimes() {
 
-        if (nIntervals == 1)
-            return;
+ 	    if (nIntervals==1)
+	        return;
 
         for (int i = 0; i < nIntervals - 1; i++)
             times[i] = commonSkylineInput.get().changeTimesInput.get().getArrayValue(i);
@@ -98,15 +156,66 @@ public class SkylineScalarWithCommonTimeParameter extends SkylineParameter {
         }
     }
 
-
-    @Override
     protected void updateValues() {
 
         for (int interval = 0; interval < nIntervals; interval++) {
             values[interval] = skylineValuesInput.get().getArrayValue(interval);
         }
 
+        if (timesAreAges)
+            Utils.reverseDoubleArray(values);
     }
+
+
+    protected int getIntervalIdx(double time) {
+        if (nIntervals==1)
+            return 0;
+
+		int idx = Arrays.binarySearch(times, time);
+
+		if (idx < 0)
+			idx = -idx - 1;
+
+		return idx;
+    }
+
+    @Override
+    protected void restore() {
+        super.restore();
+
+        double[] tmp;
+
+        if (nIntervals>1) {
+            tmp = times;
+            times = storedTimes;
+            storedTimes = tmp;
+        }
+
+        tmp = values;
+        values = storedValues;
+        storedValues = tmp;
+
+        isDirty = false;
+    }
+
+    @Override
+    protected void store() {
+        super.store();
+
+        if (nIntervals>1)
+            System.arraycopy(times, 0, storedTimes, 0, times.length);
+
+        if (nIntervals >= 0) System.arraycopy(values, 0, storedValues, 0, nIntervals);
+    }
+
+    @Override
+    protected boolean requiresRecalculation() {
+        isDirty = true;
+        return true;
+    }
+
+    public boolean epochVisualizerDisplayed = false;
+
 
     /**
      * Retrieve value of vector at a chosen time (not age).
@@ -124,22 +233,6 @@ public class SkylineScalarWithCommonTimeParameter extends SkylineParameter {
         return valuesAtTime;
     }
 
-    @Override
-    protected void store() {
-        super.store();
-
-        if (nIntervals >= 0) System.arraycopy(values, 0, storedValues, 0, nIntervals);
-    }
-
-    @Override
-    protected void restore() {
-        super.restore();
-
-        double[] tmp;
-        tmp = values;
-        values = storedValues;
-        storedValues = tmp;
-    }
 
     /*
      * Loggable implementation

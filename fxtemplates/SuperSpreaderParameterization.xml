@@ -129,16 +129,16 @@
     <mergewith point='treePriorTemplates'>
 
         <!-- SuperSpreader parameterization -->
-        <subtemplate id="SuperSpreaderParameterization" class="bdmmprime.parameterization.SuperSpreaderParameterization"
-                     suppressInputs="bdmmprime.parameterization.SuperSpreaderParameterization.typeSet,
-                     bdmmprime.parameterization.SuperSpreaderParameterization.commonSkyline"
+        <subtemplate id="SuperSpreaderParameterization" class="superspreader.parameterization.SuperSpreaderParameterization"
+                     suppressInputs="superspreader.parameterization.SuperSpreaderParameterization.typeSet,
+                     superspreader.parameterization.SuperSpreaderParameterization.commonSkyline"
                      mainid="SuperSpreaderBDMMPrimeParameterization.t:$(n)">
 
             <![CDATA[
 
 
             <parameterization id="SuperSpreaderBDMMPrimeParameterization.t:$(n)"
-                              spec="bdmmprime.parameterization.SuperSpreaderParameterization">
+                              spec="superspreader.parameterization.SuperSpreaderParameterization">
                         <processLength idref="originBDMMPrime.t:$(n)"/>
                         <typeSet idref="typeSetBDMMPrime.t:$(n)"/>
                         <becomeUninfectiousRate id="becomeUninfectiousRateSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineVectorParameter" typeSet="@typeSetBDMMPrime.t:$(n)" timesAreAges="true">
@@ -163,20 +163,20 @@
                         </rhoSampling>
 
                         <!-- Super Spreader parameters -->
-                        <CommonChangeTime id="CommonChangeTimeSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.TimeOnlySkylineParameter" typeSet="@typeSetBDMMPrime.t:$(n)" timesAreAges="true">
+                        <CommonChangeTime id="CommonChangeTimeSPSuperSpreader.t:$(n)" spec="superspreader.parameterization.TimeOnlySkylineParameter" typeSet="@typeSetBDMMPrime.t:$(n)" timesAreAges="true">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                         </CommonChangeTime>
-                        <ReAverage id="ReAverageSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarWithCommonTimeParameter" typeSet="@typeSetBDMMPrime.t:$(n)">
+                        <ReAverage id="ReAverageSPSuperSpreader.t:$(n)" spec="superspreader.parameterization.SkylineScalarWithCommonTimeParameter" typeSet="@typeSetBDMMPrime.t:$(n)">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                             <skylineValues id="ReAverageSuperSpreader.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.0" lower="0.0"/>
                             <commonSkyline idref="CommonChangeTimeSPSuperSpreader.t:$(n)"/>
                         </ReAverage>
-                        <SSFrac id="SSFracSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarWithCommonTimeParameter" typeSet="@typeSetBDMMPrime.t:$(n)">
+                        <SSFrac id="SSFracSPSuperSpreader.t:$(n)" spec="superspreader.parameterization.SkylineScalarWithCommonTimeParameter" typeSet="@typeSetBDMMPrime.t:$(n)">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                             <skylineValues id="SSFracSuperSpreader.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="0.1" lower="0.0" upper="1.0"/>
                             <commonSkyline idref="CommonChangeTimeSPSuperSpreader.t:$(n)"/>
                         </SSFrac>
-                        <ReMultiplier id="ReMultiplierSPSuperSpreader.t:$(n)" spec="bdmmprime.parameterization.SkylineScalarWithCommonTimeParameter" typeSet="@typeSetBDMMPrime.t:$(n)">
+                        <ReMultiplier id="ReMultiplierSPSuperSpreader.t:$(n)" spec="superspreader.parameterization.SkylineScalarWithCommonTimeParameter" typeSet="@typeSetBDMMPrime.t:$(n)">
                             <processLength idref="originBDMMPrime.t:$(n)"/>
                             <skylineValues id="ReMultiplierSuperSpreader.t:$(n)" spec='beast.base.inference.parameter.RealParameter' value="1.1" lower="1.0"/>
                             <commonSkyline idref="CommonChangeTimeSPSuperSpreader.t:$(n)"/>

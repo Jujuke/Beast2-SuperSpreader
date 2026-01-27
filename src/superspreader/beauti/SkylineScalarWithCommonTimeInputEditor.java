@@ -1,16 +1,30 @@
-package bdmmprime.beauti;
+/*
+ * Copyright (C) 2026 Institut Pasteur PARIS
+ *
+ * This file is part of the SuperSpreader BEAST module project.
+ *
+ * SuperSpreader is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * See the COPYING file for details.
+ */
+
+package superspreader.beauti;
 
 import bdmmprime.distribution.BirthDeathMigrationDistribution;
-import bdmmprime.parameterization.SkylineParameter;
-import bdmmprime.parameterization.SkylineScalarWithCommonTimeParameter;
-import bdmmprime.parameterization.SuperSpreaderParameterization;
+import superspreader.parameterization.SkylineScalarWithCommonTimeParameter;
+import superspreader.parameterization.SuperSpreaderParameterization;
 import bdmmprime.parameterization.TypeSet;
 import beast.base.core.BEASTInterface;
 import beast.base.core.Function;
 import beast.base.core.Input;
 import beast.base.evolution.tree.TraitSet;
+import beast.base.evolution.tree.Tree;
 import beast.base.inference.parameter.RealParameter;
 import beastfx.app.inputeditor.BeautiDoc;
+import beastfx.app.inputeditor.InputEditor;
 import beastfx.app.util.FXUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValueBase;
@@ -20,9 +34,16 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.converter.DoubleStringConverter;
 
-public class SkylineScalarWithCommonTimeInputEditor extends SkylineInputEditor {
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+public class SkylineScalarWithCommonTimeInputEditor extends InputEditor.Base {
 
     SkylineScalarWithCommonTimeParameter skylineScalarWithCommonTimeParameter;
+
+    public TableView<ValuesTableEntry> valuesTable;
+
+    public VBox mainInputBox;
 
     public SkylineScalarWithCommonTimeInputEditor(BeautiDoc doc) {
         super(doc);
@@ -37,7 +58,6 @@ public class SkylineScalarWithCommonTimeInputEditor extends SkylineInputEditor {
     public void init(Input<?> input, BEASTInterface beastObject, int itemNr,
                      ExpandOption isExpandOption, boolean addButtons) {
 
-        skylineParameter = (SkylineParameter) input.get();
         skylineScalarWithCommonTimeParameter = (SkylineScalarWithCommonTimeParameter) input.get();
 
         m_input = input;
@@ -107,7 +127,6 @@ public class SkylineScalarWithCommonTimeInputEditor extends SkylineInputEditor {
         refreshPanel();
     }
 
-    @Override
     void ensureValuesConsistency() {
 
         Input<Function> changeTimesInput;
@@ -130,8 +149,16 @@ public class SkylineScalarWithCommonTimeInputEditor extends SkylineInputEditor {
         skylineScalarWithCommonTimeParameter.initAndValidate();
     }
 
+    public void sanitiseRealParameter(RealParameter parameter) { //JKE temp
+        parameter.valuesInput.setValue(
+                Arrays.stream(parameter.getDoubleValues())
+                        .mapToObj(String::valueOf)
+                        .collect(Collectors.joining(" ")),
+                parameter);
+        parameter.initAndValidate();
+    }
 
-    @Override
+
     void updateValuesUI() {
         valuesTable.getColumns().clear();
         valuesTable.getItems().clear();
@@ -186,11 +213,11 @@ public class SkylineScalarWithCommonTimeInputEditor extends SkylineInputEditor {
      */
     void updateFrequenciesForSSFrac() {
 
-        for (BEASTInterface beastInterface : skylineParameter.getOutputs()) {
+        for (BEASTInterface beastInterface : skylineScalarWithCommonTimeParameter.getOutputs()) {
             if (!(beastInterface instanceof SuperSpreaderParameterization))
                 continue;
             SuperSpreaderParameterization parameterization = (SuperSpreaderParameterization)beastInterface;
-            if (!parameterization.SSFracInput.get().equals(skylineParameter)) {
+            if (!parameterization.SSFracInput.get().equals(skylineScalarWithCommonTimeParameter)) {
                 continue;
             }
             for (BEASTInterface beastInterfaceSuper : parameterization.getOutputs()) {
@@ -231,5 +258,16 @@ public class SkylineScalarWithCommonTimeInputEditor extends SkylineInputEditor {
         updateFrequenciesForSSFrac();
         sync();
     }
+
+    private String getPartitionID() {
+        return skylineScalarWithCommonTimeParameter.getID().split("\\.t:")[1];
+    }
+
+    protected Tree getTree() {
+        return (Tree) doc.pluginmap.get("Tree.t:" + getPartitionID());
+    }
+
+
+    public abstract static class ValuesTableEntry { }
 
 }

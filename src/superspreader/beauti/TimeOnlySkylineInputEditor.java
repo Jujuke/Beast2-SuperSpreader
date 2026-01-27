@@ -1,7 +1,21 @@
-package bdmmprime.beauti;
+/*
+ * Copyright (C) 2026 Institut Pasteur PARIS
+ *
+ * This file is part of the SuperSpreader BEAST module project.
+ *
+ * SuperSpreader is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * See the COPYING file for details.
+ */
 
+package superspreader.beauti;
+
+import bdmmprime.beauti.EpochVisualizerPane;
 import bdmmprime.distribution.BirthDeathMigrationDistribution;
-import bdmmprime.parameterization.TimeOnlySkylineParameter;
+import superspreader.parameterization.TimeOnlySkylineParameter;
 import beast.base.core.BEASTInterface;
 import beast.base.core.Input;
 import beast.base.evolution.tree.TraitSet;

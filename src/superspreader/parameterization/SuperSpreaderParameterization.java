@@ -1,5 +1,22 @@
-package bdmmprime.parameterization;
+/*
+ * Copyright (C) 2026 Institut Pasteur PARIS
+ *
+ * This file is part of the SuperSpreader BEAST module project.
+ *
+ * SuperSpreader is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * See the COPYING file for details.
+ */
 
+package superspreader.parameterization;
+
+import bdmmprime.parameterization.Parameterization;
+import bdmmprime.parameterization.SkylineMatrixParameter;
+import bdmmprime.parameterization.SkylineVectorParameter;
+import bdmmprime.parameterization.TimedParameter;
 import beast.base.core.Citation;
 import beast.base.core.Input;
 

@@ -1,0 +1,1 @@
+This is my [BEAST 2](http://beast2.org) package containing the Super Spreader Parameterization for the BDMM model.

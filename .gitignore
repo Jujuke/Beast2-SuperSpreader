@@ -23,8 +23,18 @@ bin/
 /nbdist/
 /.nb-gradle/
 
+### Misc cruft ###
+/META-INF
+/bin
+
 ### VS Code ###
 .vscode/
 
 ### Mac OS ###
 .DS_Store
+
+### Ant build script ###
+/build
+/build-lib
+/dist
+/deps

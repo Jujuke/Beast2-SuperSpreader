@@ -192,7 +192,7 @@
         <unzip src="bdmm-archive/bdmm.zip" dest="bdmm-archive"/>
 
         <copy todir="${bdmm-source-root}">
-            <fileset dir="bdmm-archive/bdmm-${bdmm-version}" includes="**/*.*"/>
+            <fileset dir="bdmm-archive/BDMM-Prime-${bdmm-version}" includes="**/*.*"/>
         </copy>
 
         <delete dir="bdmm-archive"/>

@@ -4,6 +4,8 @@ stages:
 test:
   stage: test
   image: eclipse-temurin:17
+  variables:
+    JAVA_FX_HOME: /usr/share/java
 
   script:
     - apt-get update

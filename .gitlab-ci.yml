@@ -5,10 +5,16 @@ build:
   stage: build
   image: eclipse-temurin:21
   variables:
-    JAVA_FX_HOME: /usr/share/java/javafx
+    JAVA_FX_HOME: /opt/javafx
   before_script:
-    - apt-get update && apt-get install -y ant wget unzip
-    - wget https://gluonhq.com/download/javafx-21-linux/ -O javafx.zip
-    - unzip javafx.zip -d /usr/share/java/javafx
+    - apt-get update
+    - apt-get install -y ant wget unzip
+    - mkdir -p /opt/javafx
+    - cd /opt/javafx
+    - wget https://repo1.maven.org/maven2/org/openjfx/javafx-base/21/javafx-base-21-linux.jar
+    - wget https://repo1.maven.org/maven2/org/openjfx/javafx-graphics/21/javafx-graphics-21-linux.jar
+    - wget https://repo1.maven.org/maven2/org/openjfx/javafx-controls/21/javafx-controls-21-linux.jar
+    - wget https://repo1.maven.org/maven2/org/openjfx/javafx-fxml/21/javafx-fxml-21-linux.jar
+    - cd -
   script:
     - ant

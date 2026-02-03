@@ -33,6 +33,10 @@ import javafx.util.Duration;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+
+/**
+ * This class reuses and adapts code from {@link bdmmprime.beauti.SkylineInputEditor}.
+ */
 public class TimeOnlySkylineInputEditor extends InputEditor.Base {
 
     TimeOnlySkylineParameter CommonChangeTime;
@@ -73,6 +77,12 @@ public class TimeOnlySkylineInputEditor extends InputEditor.Base {
         mainInputBox = FXUtils.newVBox();
         mainInputBox.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY,
                 BorderStrokeStyle.SOLID, null, null)));
+
+        HBox boxHorizHelp = FXUtils.newHBox();
+        Label helpLabel = new Label("This parameter will create common change times\nfor Re Average, SSFrac and Re Multiplier");
+        boxHorizHelp.getChildren().add(helpLabel);
+
+        mainInputBox.getChildren().add(boxHorizHelp);
 
         HBox boxHoriz = FXUtils.newHBox();
         Label changePointLabel = new Label("Number of change times:");

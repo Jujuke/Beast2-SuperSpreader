@@ -37,6 +37,10 @@ import javafx.util.converter.DoubleStringConverter;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * This class reuses and adapts code from {@link bdmmprime.beauti.SkylineInputEditor}
+ * and {@link bdmmprime.beauti.SkylineVectorInputEditor}
+ */
 public class SkylineScalarWithCommonTimeInputEditor extends InputEditor.Base {
 
     SkylineScalarWithCommonTimeParameter skylineScalarWithCommonTimeParameter;

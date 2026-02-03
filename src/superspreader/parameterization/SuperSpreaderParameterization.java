@@ -19,6 +19,10 @@ import bdmmprime.parameterization.SkylineVectorParameter;
 import bdmmprime.parameterization.TimedParameter;
 import beast.base.core.Citation;
 import beast.base.core.Input;
+import beast.base.evolution.alignment.TaxonSet;
+import beast.base.evolution.tree.TraitSet;
+
+import java.util.stream.Collectors;
 
 
 @Citation(value = "Stadler T, Bonhoeffer S. (2013). Uncovering epidemiological dynamics in heterogeneous host" +
@@ -60,8 +64,17 @@ public class SuperSpreaderParameterization extends Parameterization {
 
     @Override
     public void initAndValidate() {
-        typeSetInput.get().unknownTypeIndicatorInput.set("NOT_SET");
+//        typeSetInput.get().unknownTypeIndicatorInput.set("NOT_SET");
         typeSetInput.get().valueInput.set("NS,SS");
+
+        Input<String> traitsInput = typeSetInput.get().typeTraitSetInput.get().traitsInput;
+        Input<TaxonSet> taxaInput = typeSetInput.get().typeTraitSetInput.get().taxaInput;
+        String value = taxaInput.get().getTaxaNames().stream()
+                .map(n -> n + "=?")
+                .collect(Collectors.joining(","));
+
+        traitsInput.setValue(value, this);
+
         nTypes = 2;
         super.initAndValidate();
     }

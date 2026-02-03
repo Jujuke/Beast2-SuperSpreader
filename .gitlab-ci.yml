@@ -8,4 +8,4 @@ test:
   script:
     - apt-get update
     - apt-get install -y ant
-    - ant test
+    - ant

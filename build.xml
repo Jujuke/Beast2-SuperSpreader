@@ -187,7 +187,7 @@
 
         <mkdir dir="bdmm-archive"/>
 
-        <get src="https://github.com/CompEvol/beast2/archive/${beast-branch}.zip"
+        <get src="https://github.com/tgvaughan/BDMM-Prime/archive/${beast-branch}.zip"
              dest="bdmm-archive/bdmm.zip"/>
         <unzip src="bdmm-archive/bdmm.zip" dest="bdmm-archive"/>
 

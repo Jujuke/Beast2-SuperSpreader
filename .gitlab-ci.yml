@@ -3,11 +3,12 @@ stages:
 
 build:
   stage: build
-  image: debian:stable
+  image: eclipse-temurin:21
   variables:
-    JAVA_FX_HOME: /usr/share/java/
+    JAVA_FX_HOME: /usr/share/java/javafx
   before_script:
-    - apt-get update
-    - apt-get install -y ant openjdk-21-jdk openjfx ant unzip wget
+    - apt-get update && apt-get install -y ant wget unzip
+    - wget https://gluonhq.com/download/javafx-21-linux/ -O javafx.zip
+    - unzip javafx.zip -d /usr/share/java/javafx
   script:
     - ant

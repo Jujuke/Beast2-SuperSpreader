@@ -1,12 +1,20 @@
-# Dockerfile to build container for unit testing
+# Dockerfile pour build Ant + JavaFX
+FROM eclipse-temurin:17-jdk
 
-FROM debian:stable
+# Installer Ant, JavaFX et utilitaires de base
+RUN apt-get update && \
+    apt-get install -y ant openjfx wget unzip && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update
-RUN apt-get install -y openjdk-21-jdk openjfx ant
+# Définir la variable d'environnement JavaFX
+ENV JAVA_FX_HOME=/usr/share/openjfx
 
+# Définir le dossier de travail
 WORKDIR /root
 
+# Copier le projet dans l'image
 ADD . ./
 
-ENTRYPOINT JAVA_FX_HOME=/usr/share/java/ ant test
+# Commande par défaut : juste build (pas les tests)
+ENTRYPOINT ["ant"]
+CMD []

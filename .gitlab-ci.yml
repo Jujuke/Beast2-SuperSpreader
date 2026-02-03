@@ -5,11 +5,14 @@ test:
   stage: test
   image: docker:25
   services:
-    - docker:25-dind
+    - name: docker:25-dind
+      command: ["--tls=false"]
 
   variables:
+    DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
 
   script:
+    - docker info
     - docker build -t tests .
     - docker run tests

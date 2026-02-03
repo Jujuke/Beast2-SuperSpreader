@@ -15,6 +15,8 @@ build:
     - wget https://repo1.maven.org/maven2/org/openjfx/javafx-graphics/21/javafx-graphics-21-linux.jar
     - wget https://repo1.maven.org/maven2/org/openjfx/javafx-controls/21/javafx-controls-21-linux.jar
     - wget https://repo1.maven.org/maven2/org/openjfx/javafx-fxml/21/javafx-fxml-21-linux.jar
+    - wget https://repo1.maven.org/maven2/org/openjfx/javafx-web/21/javafx-web-21-linux.jar
+    - wget https://repo1.maven.org/maven2/org/openjfx/javafx-swing/21/javafx-swing-21-linux.jar
     - cd -
   script:
     - ant

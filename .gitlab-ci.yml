@@ -5,9 +5,9 @@ test:
   stage: test
   image: eclipse-temurin:17
   variables:
-    JAVA_FX_HOME: /usr/share/java
+    JAVA_FX_HOME: /usr/share/openjfx/lib
 
   script:
     - apt-get update
-    - apt-get install -y ant
+    - apt-get install -y ant openjfx
     - ant

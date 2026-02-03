@@ -218,6 +218,7 @@
             <classpath>
                 <pathelement path="${classpath}"/>
                 <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
+                <fileset dir="${env.JAVA_FX_HOME}" includes="**/*.jar"/>
                 <pathelement path="${build-beast}"/>
                 <pathelement path="${build-beastfx}"/>
             </classpath>

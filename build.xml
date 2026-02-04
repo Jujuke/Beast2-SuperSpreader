@@ -25,44 +25,13 @@
                 debuglevel="lines,vars,source"/>
     </presetdef>
 
-    <!-- Gradually completing the classpaths -->
+    <!-- Base classpath -->
 
-    <path id="cp.base">
+    <path id="cp.external">
         <fileset dir="${lib}" includes="**/*.jar" erroronmissingdir="false"/>
         <fileset dir="${env.JAVA_FX_HOME}" includes="**/*.jar"/>
-    </path>
-
-    <path id="cp.beast">
-        <path refid="cp.base"/>
-        <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
         <fileset dir="deps/SA" includes="**/*.jar" erroronmissingdir="false"/>
         <fileset dir="deps/BEASTLabs" includes="**/*.jar" erroronmissingdir="false"/>
-    </path>
-
-    <path id="cp.beastfx">
-        <path refid="cp.beast"/>
-        <pathelement path="${build-beast}"/>
-        <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>
-    </path>
-
-    <path id="cp.bdmm">
-        <path refid="cp.beastfx"/>
-        <pathelement path="${build-beastfx}"/>
-    </path>
-
-    <path id="cp.superspreader">
-        <path refid="cp.bdmm"/>
-        <pathelement path="${build-bdmm}"/>
-    </path>
-
-    <path id="cp.test">
-        <path refid="cp.superspreader"/>
-        <pathelement path="${build}" />
-    </path>
-
-    <path id="cp.testrun">
-        <path refid="cp.test"/>
-        <pathelement path="${build-test}" />
     </path>
 
     <!-- Directories necessary for all BEAST 2 packages -->
@@ -149,10 +118,21 @@
     <target name="build-beast" depends="get-local-beast,get-remote-beast">
       <mkdir dir="${build-beast}"/>
       <javac17
-          srcdir="${beast-source-root}/src"
-          destdir="${build-beast}">
-          <classpath refid="cp.beast"/>
+              srcdir="${beast-source-root}/src"
+              destdir="${build-beast}">
+          <classpath>
+              <path refid="cp.external"/>
+              <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
+          </classpath>
       </javac17>
+        <javac17
+                srcdir="${beast-source-root}/test"
+                destdir="${build-beast}">
+            <classpath>
+                <path refid="cp.external"/>
+                <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
+            </classpath>
+        </javac17>
 
     </target>
 
@@ -191,7 +171,12 @@
         <javac17
             srcdir="${beastfx-source-root}/src"
             destdir="${build-beastfx}">
-            <classpath refid="cp.beastfx"/>
+            <classpath>
+                <path refid="cp.external"/>
+                <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>
+                <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
+                <pathelement path="${build-beast}"/>
+            </classpath>
         </javac17>
     </target>
 
@@ -233,7 +218,13 @@
         <javac17
                 srcdir="${bdmm-source-root}/src"
                 destdir="${build-bdmm}">
-            <classpath refid="cp.bdmm"/>
+            <classpath>
+                <path refid="cp.external"/>
+                <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
+                <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>
+                <pathelement path="${build-beast}"/>
+                <pathelement path="${build-beastfx}"/>
+            </classpath>
         </javac17>
 
     </target>
@@ -263,7 +254,14 @@
       <javac17
               srcdir="${src}"
               destdir="${build}">
-              <classpath refid="cp.superspreader"/>
+          <classpath>
+              <path refid="cp.external"/>
+              <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
+              <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>
+              <pathelement path="${build-beast}"/>
+              <pathelement path="${build-beastfx}"/>
+              <pathelement path="${build-bdmm}"/>
+          </classpath>
         </javac17>
     </target>
 
@@ -285,7 +283,15 @@
       <javac17
               srcdir="${test}"
               destdir="${build-test}">
-          <classpath refid="cp.test"/>
+          <classpath>
+              <path refid="cp.external"/>
+              <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
+              <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>
+              <pathelement path="${build-beast}"/>
+              <pathelement path="${build-beastfx}"/>
+              <pathelement path="${build-bdmm}"/>
+              <pathelement path="${build}" />
+          </classpath>
       </javac17>
     </target>
 
@@ -294,7 +300,16 @@
     <target name="test" depends="compile-test">
       <junit printsummary="yes" failureproperty="testFailed" showoutput="true"
              maxmemory="4G">
-            <classpath refid="cp.testrun"/>
+          <classpath>
+              <path refid="cp.external"/>
+              <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
+              <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>
+              <pathelement path="${build-beast}"/>
+              <pathelement path="${build-beastfx}"/>
+              <pathelement path="${build-bdmm}"/>
+              <pathelement path="${build}" />
+              <pathelement path="${build-test}" />
+          </classpath>
             <batchtest fork="true" todir="${test-reports}">
                 <fileset dir="${test}">
                     <include name="**/*Test.java"/>

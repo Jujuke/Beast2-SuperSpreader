@@ -15,6 +15,16 @@
     <!-- BEAST 2 currently uses Java 17 language features -->
     <property name="releaseVersion" value="17"/>
 
+    <presetdef name="javac17">
+        <javac
+                release="${releaseVersion}"
+                encoding="UTF-8"
+                includeantruntime="false"
+                fork="yes"
+                debug="true"
+                debuglevel="lines,vars,source"/>
+    </presetdef>
+
     <!-- Directories necessary for all BEAST 2 packages -->
     <property name="doc" location="doc"/>
     <property name="examples" location="examples"/>
@@ -105,24 +115,11 @@
           <fileset dir="deps/BEASTLabs" includes="**/*.jar" erroronmissingdir="false"/>
       </path>
       <mkdir dir="${build-beast}"/>
-      <javac 
+      <javac17
           srcdir="${beast-source-root}/src"
-          destdir="${build-beast}"
-          release="${releaseVersion}"
-          encoding="UTF-8"
-          includeantruntime="false"
-          fork="yes">
+          destdir="${build-beast}">
           <classpath refid="cp.beast"/>
-      </javac>
-      <javac 
-          srcdir="${beast-source-root}/test"
-          destdir="${build-beast}"
-          release="${releaseVersion}"
-          encoding="UTF-8"
-          includeantruntime="false"
-          fork="yes">
-          <classpath refid="cp.beast"/>
-      </javac>
+      </javac17>
 
     </target>
 
@@ -163,14 +160,11 @@
           <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>
       </path>
       <mkdir dir="${build-beastfx}"/>
-        <javac 
+        <javac17
             srcdir="${beastfx-source-root}/src"
-            destdir="${build-beastfx}"
-            release="${releaseVersion}"
-            includeantruntime="false"
-            fork="yes">
+            destdir="${build-beastfx}">
             <classpath refid="cp.beastfx"/>
-        </javac>
+        </javac17>
     </target>
 
 
@@ -212,15 +206,11 @@
             <pathelement path="${build-beastfx}"/>
         </path>
         <mkdir dir="${build-bdmm}"/>
-        <javac
+        <javac17
                 srcdir="${bdmm-source-root}/src"
-                destdir="${build-bdmm}"
-                release="${releaseVersion}"
-                encoding="UTF-8"
-                includeantruntime="false"
-                fork="yes">
+                destdir="${build-bdmm}">
             <classpath refid="cp.bdmm"/>
-        </javac>
+        </javac17>
 
     </target>
 
@@ -250,13 +240,11 @@
           <path refid="cp.bdmm"/>
           <pathelement path="${build-bdmm}"/>
       </path>
-      <javac release="${releaseVersion}"
-             srcdir="${src}" destdir="${build}"
-             includeantruntime="false"
-             encoding="UTF-8"
-             fork="yes">
-             <classpath refid="cp.superspreader"/>
-        </javac>
+      <javac17
+              srcdir="${src}"
+              destdir="${build}">
+              <classpath refid="cp.superspreader"/>
+        </javac17>
     </target>
 
     <target name="copy-resources" depends="compile">
@@ -272,57 +260,40 @@
         <mkdir dir="${test-reports}"/>
     </target>
 
-<!--    &lt;!&ndash; Compile unit tests &ndash;&gt;-->
-<!--    <target name="compile-test" depends="init-test,compile,copy-resources">-->
-<!--      <javac release="${releaseVersion}"-->
-<!--             srcdir="${test}" destdir="${build-test}"-->
-<!--             includeantruntime="false"-->
-<!--             encoding="UTF-8"-->
-<!--             fork="yes">-->
-<!--            <classpath>-->
-<!--                <pathelement path="${build}" />-->
-<!--                <fileset dir="${lib}" includes="**/*.jar" erroronmissingdir="false"/>-->
-<!--                <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>-->
-<!--                <pathelement path="${build-beast}"/>-->
-<!--                <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>-->
-<!--                <pathelement path="${build-beastfx}"/>-->
-<!--                <pathelement path="${build-bdmm}"/>-->
-<!--                <fileset dir="${env.JAVA_FX_HOME}" includes="**/*.jar"/>-->
-<!--                <fileset dir="deps/SA" includes="**/*.jar"/>-->
-<!--                <fileset dir="deps/BEASTLabs" includes="**/*.jar"/>-->
-<!--            </classpath>-->
-<!--        </javac>-->
-<!--    </target>-->
+    <!-- Compile unit tests -->
+    <target name="compile-test" depends="init-test,compile,copy-resources">
+          <path id="cp.test">
+              <path refid="cp.superspreader"/>
+              <pathelement path="${build}" />
+          </path>
+      <javac17
+              srcdir="${test}"
+              destdir="${build-test}">
+          <classpath refid="cp.test"/>
+      </javac17>
+    </target>
 
 
-<!--    &lt;!&ndash; Run unit tests &ndash;&gt;-->
-<!--    <target name="test" depends="compile-test">-->
-<!--      <junit printsummary="yes" failureproperty="testFailed" showoutput="true"-->
-<!--             maxmemory="4G">-->
-<!--            <classpath>-->
-<!--                <pathelement path="${build}" />-->
-<!--                <pathelement path="${build-test}" />-->
-<!--                <fileset dir="${lib}" includes="**/*.jar" erroronmissingdir="false"/>-->
-<!--                <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>-->
-<!--                <pathelement path="${build-beast}"/>-->
-<!--                <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>-->
-<!--                <pathelement path="${build-beastfx}"/>-->
-<!--                <pathelement path="${build-bdmm}"/>-->
-<!--                <fileset dir="${env.JAVA_FX_HOME}" includes="**/*.jar"/>-->
-<!--                <fileset dir="deps/SA" includes="**/*.jar"/>-->
-<!--                <fileset dir="deps/BEASTLabs" includes="**/*.jar"/>-->
-<!--            </classpath>-->
-<!--            <batchtest fork="true" todir="${test-reports}">-->
-<!--                <fileset dir="${test}">-->
-<!--                    <include name="**/*Test.java"/>-->
-<!--                </fileset>-->
-<!--                <formatter type="plain"/>-->
-<!--                &lt;!&ndash; <formatter type="plain" usefile="false"/> <!-\- to screen -\-> &ndash;&gt;-->
-<!--            </batchtest>-->
-<!--        </junit>-->
+    <!-- Run unit tests -->
+    <target name="test" depends="compile-test">
+      <path id="cp.testrun">
+          <path refid="cp.test"/>
+          <pathelement path="${build-test}" />
+      </path>
+      <junit printsummary="yes" failureproperty="testFailed" showoutput="true"
+             maxmemory="4G">
+            <classpath refid="cp.testrun"/>
+            <batchtest fork="true" todir="${test-reports}">
+                <fileset dir="${test}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+                <formatter type="plain"/>
+                <!-- <formatter type="plain" usefile="false"/> <!-\- to screen -\-> -->
+            </batchtest>
+        </junit>
 
-<!--        <fail if="testFailed" status="1" message="Unit test failed."/>-->
-<!--    </target>-->
+        <fail if="testFailed" status="1" message="Unit test failed."/>
+    </target>
 
 
     <!-- Create BEAST 2 package -->
@@ -401,91 +372,6 @@
         <delete dir="${test-reports}" />
         <delete dir="deps" />
         <delete dir="gen" />
-    </target>
-
-
-    <!-- Create skeleton package layout in current directory -->
-    <target name="skeleton">
-
-        <fail>
-            <condition>
-                <or>
-                    <resourcecount when="gt" count="1">
-                        <fileset dir="${basedir}"/>
-                    </resourcecount>
-                    <resourcecount when="gt" count="1">
-                        <dirset dir="${basedir}"/>
-                    </resourcecount>
-                </or>
-            </condition>
-
-            ** This directory contains files besides the build script. **
-            You should run "ant skeleton" in a directory containing only the build script.
-        </fail>
-
-        <echo>===============================</echo>
-        <echo>Create skeleton BEAST 2 package</echo>
-        <echo>===============================</echo>
-        <echo/>
-        <echo>First, we need some information...</echo>
-        <echo/>
-
-        <basename property="defaultProjName" file="${basedir}"/>
-
-        <input addproperty="projName" defaultvalue="${defaultProjName}">Enter package name</input>
-        <input addproperty="license" defaultvalue="gpl3" validargs="gpl3,lgpl3,lgpl2.1,apache2">Select open source software license</input>
-        <input addproperty="projVersion" defaultvalue="1.0.0">Enter package version</input>
-        <input addproperty="beastVersionReq" defaultvalue="2.1.0">Enter minimum required BEAST 2 version</input>
-
-        <echo>Assembling files and directory structure...</echo>
-
-        <echo file="version.xml">&lt;addon name="${projName}" version="${projVersion}"&gt;
-            &lt;depends on="beast2" atleast="${beastVersionReq}"/&gt;
-
-            &lt;!-- Add other dependencies as necessary. --&gt;
-            &lt;/addon&gt;
-        </echo>
-
-        <echo file="README.md" message="README for my package.${line.separator}"/>
-
-        <condition property="licenseURL" value="https://www.gnu.org/licenses/gpl-3.0.txt">
-            <equals arg1="${license}" arg2="gpl3"/>
-        </condition>
-        <condition property="licenseURL" value="https://www.gnu.org/licenses/lgpl-3.0.txt">
-            <equals arg1="${license}" arg2="lgpl3"/>
-        </condition>
-        <condition property="licenseURL" value="https://www.gnu.org/licenses/lgpl-2.1.txt">
-            <equals arg1="${license}" arg2="lgpl2.1"/>
-        </condition>
-        <condition property="licenseURL" value="http://www.apache.org/licenses/LICENSE-2.0.txt">
-            <equals arg1="${license}" arg2="apache2"/>
-        </condition>
-
-        <get src="${licenseURL}" dest="COPYING"/>
-
-        <mkdir dir="${src}"/>
-        <mkdir dir="${test}"/>
-        <mkdir dir="${lib}"/>
-        <mkdir dir="${examples}"/>
-        <mkdir dir="${fxtemplates}"/>
-        <mkdir dir="${doc}"/>
-
-        <echo/>
-        <echo>Done.</echo>
-        <echo/>
-        <echo>The directory structure is as follows:</echo>
-        <echo>${src} - your java source goes here</echo>
-        <echo>${test} - your junit tests go here (You _are_ going to write those, aren't you!)</echo>
-        <echo>${doc} - your documentation goes here</echo>
-        <echo>${examples} - your example XML scripts go here</echo>
-        <echo>${fxtemplates} - your BEAUti fxtemplates go here</echo>
-        <echo/>
-        <echo>To build your package, just type "ant" at the command line.</echo>
-        <echo/>
-        <echo>To run unit tests, type "ant test".</echo>
-        <echo/>
-        <echo>That's it!  Happy coding!</echo>
-
     </target>
 
 </project>

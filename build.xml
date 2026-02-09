@@ -278,49 +278,51 @@
         <mkdir dir="${test-reports}"/>
     </target>
 
-    <!-- Compile unit tests -->
-    <target name="compile-test" depends="init-test,compile,copy-resources">
-      <javac17
-              srcdir="${test}"
-              destdir="${build-test}">
-          <classpath>
-              <path refid="cp.external"/>
-              <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
-              <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>
-              <pathelement path="${build-beast}"/>
-              <pathelement path="${build-beastfx}"/>
-              <pathelement path="${build-bdmm}"/>
-              <pathelement path="${build}" />
-          </classpath>
-      </javac17>
-    </target>
+<!--    No tests yet-->
+
+<!--    &lt;!&ndash; Compile unit tests &ndash;&gt;-->
+<!--    <target name="compile-test" depends="init-test,compile,copy-resources">-->
+<!--      <javac17-->
+<!--              srcdir="${test}"-->
+<!--              destdir="${build-test}">-->
+<!--          <classpath>-->
+<!--              <path refid="cp.external"/>-->
+<!--              <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>-->
+<!--              <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>-->
+<!--              <pathelement path="${build-beast}"/>-->
+<!--              <pathelement path="${build-beastfx}"/>-->
+<!--              <pathelement path="${build-bdmm}"/>-->
+<!--              <pathelement path="${build}" />-->
+<!--          </classpath>-->
+<!--      </javac17>-->
+<!--    </target>-->
 
 
-    <!-- Run unit tests -->
-    <target name="test" depends="compile-test">
-      <junit printsummary="yes" failureproperty="testFailed" showoutput="true"
-             maxmemory="4G">
-          <classpath>
-              <path refid="cp.external"/>
-              <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>
-              <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>
-              <pathelement path="${build-beast}"/>
-              <pathelement path="${build-beastfx}"/>
-              <pathelement path="${build-bdmm}"/>
-              <pathelement path="${build}" />
-              <pathelement path="${build-test}" />
-          </classpath>
-            <batchtest fork="true" todir="${test-reports}">
-                <fileset dir="${test}">
-                    <include name="**/*Test.java"/>
-                </fileset>
-                <formatter type="plain"/>
-                <!-- <formatter type="plain" usefile="false"/> <!-\- to screen -\-> -->
-            </batchtest>
-        </junit>
+<!--    &lt;!&ndash; Run unit tests &ndash;&gt;-->
+<!--    <target name="test" depends="compile-test">-->
+<!--      <junit printsummary="yes" failureproperty="testFailed" showoutput="true"-->
+<!--             maxmemory="4G">-->
+<!--          <classpath>-->
+<!--              <path refid="cp.external"/>-->
+<!--              <fileset dir="${beast-source-root}/lib" includes="**/*.jar"/>-->
+<!--              <fileset dir="${beastfx-source-root}/locallib" includes="**/*.jar"/>-->
+<!--              <pathelement path="${build-beast}"/>-->
+<!--              <pathelement path="${build-beastfx}"/>-->
+<!--              <pathelement path="${build-bdmm}"/>-->
+<!--              <pathelement path="${build}" />-->
+<!--              <pathelement path="${build-test}" />-->
+<!--          </classpath>-->
+<!--            <batchtest fork="true" todir="${test-reports}">-->
+<!--                <fileset dir="${test}">-->
+<!--                    <include name="**/*Test.java"/>-->
+<!--                </fileset>-->
+<!--                <formatter type="plain"/>-->
+<!--                &lt;!&ndash; <formatter type="plain" usefile="false"/> <!-\- to screen -\-> &ndash;&gt;-->
+<!--            </batchtest>-->
+<!--        </junit>-->
 
-        <fail if="testFailed" status="1" message="Unit test failed."/>
-    </target>
+<!--        <fail if="testFailed" status="1" message="Unit test failed."/>-->
+<!--    </target>-->
 
 
     <!-- Create BEAST 2 package -->

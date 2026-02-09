@@ -64,8 +64,7 @@ public class SuperSpreaderParameterization extends Parameterization {
 
     @Override
     public void initAndValidate() {
-//        typeSetInput.get().unknownTypeIndicatorInput.set("NOT_SET");
-        typeSetInput.get().valueInput.set("NS,SS");
+        typeSetInput.get().valueInput.setValue("NS,SS", this);
 
         Input<String> traitsInput = typeSetInput.get().typeTraitSetInput.get().traitsInput;
         Input<TaxonSet> taxaInput = typeSetInput.get().typeTraitSetInput.get().taxaInput;

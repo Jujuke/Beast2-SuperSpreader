@@ -183,14 +183,12 @@ public class TimeOnlySkylineInputEditor extends InputEditor.Base {
                 changeTimesBox.setVisible(false);
             }
             refreshPanel();
-            System.out.println(CommonChangeTime);
 
         });
 
         timesAreAgesCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             CommonChangeTime.timesAreAgesInput.setValue(newValue, CommonChangeTime);
             CommonChangeTime.initAndValidate();
-            System.out.println(CommonChangeTime);
             epochVisualizer.repaintCanvas();
         });
 
@@ -203,7 +201,6 @@ public class TimeOnlySkylineInputEditor extends InputEditor.Base {
         timesAreRelativeCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             CommonChangeTime.timesAreRelativeInput.setValue(newValue, CommonChangeTime);
             CommonChangeTime.initAndValidate();
-            System.out.println(CommonChangeTime);
             epochVisualizer.repaintCanvas();
         });
 
@@ -291,7 +288,6 @@ public class TimeOnlySkylineInputEditor extends InputEditor.Base {
                 parameter.setValue(index, Double.valueOf(newValue));
                 sanitiseRealParameter(parameter);
                 CommonChangeTime.initAndValidate();
-                System.out.println(CommonChangeTime);
                 epochVisualizer.repaintCanvas();
             });
 

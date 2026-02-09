@@ -139,7 +139,7 @@ public class TimeOnlySkylineInputEditor extends InputEditor.Base {
         epochVisualizer.setManaged(CommonChangeTime.epochVisualizerDisplayed);
         mainInputBox.getChildren().add(epochVisualizer);
 
-        epochVisualizer.setScalar(false);
+        epochVisualizer.setScalar(true);
 
         pane.getChildren().add(mainInputBox);
         getChildren().add(pane);

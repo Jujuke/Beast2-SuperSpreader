@@ -1,1 +1,29 @@
 This is a [BEAST 2](http://beast2.org) package containing the Super Spreader Parameterization for the BDMM model.
+
+
+## Installation
+
+
+### From Beauti
+
+Open Beauti then go to `File -> Manage packages`.
+At the bottom of the window, click on `Package repositories`.
+Then click on `Add URL` and add the following address:
+```
+https://raw.githubusercontent.com/Jujuke/Beast2-SuperSpreader/main/package.xml
+```
+Now the Super Spreader should be available for download in the list of packages.
+
+
+### Manually
+
+Download [SuperSpreader.v1.0.0.zip](https://github.com/Jujuke/Beast2-SuperSpreader/releases/download/v1.0.0/SuperSpreader.v1.0.0.zip).
+Then, create a SuperSpreader subdirectory:
+
+```
+for Windows in Users\<YourName>\BEAST\2.7\SuperSpreader
+for Mac in /Users/<YourName>\/Library/Application Support/BEAST/2.7/SuperSpreader
+for Linux /home/<YourName>/.beast/2.7/SuperSpreader
+```
+
+Unzip the zip file in the newly created directory.

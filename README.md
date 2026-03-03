@@ -3,16 +3,24 @@ This is a [BEAST 2](http://beast2.org) package containing the Super Spreader Par
 
 ## Installation
 
+### Requirements
 
-### From Beauti
+SuperSpreader requires an installation of the BDMM-Prime package on  [BEAST 2.7](https://www.beast2.org/).
+Please, visit the [BDMM-Prime](https://tgvaughan.github.io/BDMM-Prime/) page for installation instructions.
 
-Open Beauti then go to `File -> Manage packages`.
+### From BEAUti
+
+Open **BEAUti** then go to `File -> Manage packages`.
 At the bottom of the window, click on `Package repositories`.
 Then click on `Add URL` and add the following address:
 ```
 https://raw.githubusercontent.com/Jujuke/Beast2-SuperSpreader/main/package.xml
 ```
 Now the Super Spreader should be available for download in the list of packages.
+Select it, then click the `Install/Upgrade button`.
+Restart **BEAUti** and **SuperSpreader** should now be available to use on your system.
+
+
 
 
 ### Manually
